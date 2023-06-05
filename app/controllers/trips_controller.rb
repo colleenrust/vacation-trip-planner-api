@@ -3,7 +3,8 @@ class TripsController < ApplicationController
 
   # GET /trips or /trips.json
   def index
-    @trips = Trip.all
+    p current_user
+    @trips = Trip.where(user_id: current_user.id)
   end
 
   # GET /trips/1 or /trips/1.json
@@ -65,6 +66,7 @@ class TripsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def trip_params
-      params.require(:trip).permit(:user_id, :title, :image_url, :start_time, :end_time)
+      params.permit(:user_id, :title, :image_url, :start_time, :end_time)
     end
 end
+# require(:trip)
