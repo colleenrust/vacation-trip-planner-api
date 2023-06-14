@@ -4,57 +4,67 @@ class PlacesController < ApplicationController
   # GET /places or /places.json
   def index
     @places = Place.all
+    render :index
   end
 
   # GET /places/1 or /places/1.json
   def show
+    @place = Place.find_by(id: params[:id])
+    render :show
   end
 
   # GET /places/new
-  def new
-    @place = Place.new
-  end
+  # def new
+  #   @place = Place.new
+  # end
 
   # GET /places/1/edit
-  def edit
-  end
+  # def edit
+  # end
 
   # POST /places or /places.json
   def create
-    @place = Place.new(place_params)
+    @place = Place.new(
+      trip_id: params[:trip_id],
+      address: params[:address],
+      name: params[:name],
+      description: params[:description],
+      start_time: params[:start_time],
+      end_time: params[:end_time]
+    )
 
-    respond_to do |format|
-      if @place.save
-        format.html { redirect_to place_url(@place), notice: "Place was successfully created." }
-        format.json { render :show, status: :created, location: @place }
+    if @place.save
+      # @image = Image.new(
+      #   url: params[:image_url],
+      #   place_id: @place.id
+      # )
+      # @image.save!
+      # render :show
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @place.errors, status: :unprocessable_entity }
-      end
+        render json: {errors: @place.errors.full_messages}, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /places/1 or /places/1.json
-  def update
-    respond_to do |format|
-      if @place.update(place_params)
-        format.html { redirect_to place_url(@place), notice: "Place was successfully updated." }
-        format.json { render :show, status: :ok, location: @place }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @place.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+#   def update
+#     respond_to do |format|
+#       if @place.update(place_params)
+#         format.html { redirect_to place_url(@place), notice: "Place was successfully updated." }
+#         format.json { render :show, status: :ok, location: @place }
+#       else
+#         format.html { render :edit, status: :unprocessable_entity }
+#         format.json { render json: @place.errors, status: :unprocessable_entity }
+#       end
+#     end
+#   end
 
   # DELETE /places/1 or /places/1.json
   def destroy
+    # find the right recipe
+    @place = Place.find_by(id: params[:id])
+    # delete that recipe
     @place.destroy
-
-    respond_to do |format|
-      format.html { redirect_to places_url, notice: "Place was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    render json: {message: "Place has been successfully removed"}
   end
 
   private

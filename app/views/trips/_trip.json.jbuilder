@@ -1,2 +1,10 @@
-json.extract! trip, :id, :user_id, :title, :image_url, :start_time, :end_time, :created_at, :updated_at
-json.url trip_url(trip, format: :json)
+
+json.user_id trip.user_id
+json.title trip.title
+json.image_url trip.image_url
+json.start_time trip.start_time
+json.end_time trip.end_time
+json.created_at trip.created_at
+json.updated_at trip.updated_at 
+
+# json.id trip.id
